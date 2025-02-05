@@ -19,7 +19,6 @@ export class HttpExceptionHandlerFilter<T extends HttpException>
       exception as unknown as { response: { message: string[] } }
     )?.response?.message?.[0];
 
-    console.log({ exception });
     response.status(statusCode).json({
       error: exception.message,
       message: message ? message : exception.message,
