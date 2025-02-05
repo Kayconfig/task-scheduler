@@ -31,11 +31,6 @@ import { TaskNotFoundResponseDto } from './dto/task-not-found-response.dto';
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
-  @Get('error')
-  throwError() {
-    throw new InternalServerErrorException();
-  }
-
   @Post()
   @ApiCreatedResponse({
     type: CreateTaskResponse,
