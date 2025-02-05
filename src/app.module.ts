@@ -6,6 +6,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmOptions } from './typeorm/typeorm-options';
 import { CommonModule } from './common/common.module';
 import { IamModule } from './iam/iam.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -14,7 +16,13 @@ import { IamModule } from './iam/iam.module';
     TaskModule,
     CommonModule,
     IamModule,
+    ThrottlerModule.forRoot([{ ttl: 60_000, limit: 5 }]),
   ],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule {}

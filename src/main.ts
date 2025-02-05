@@ -17,6 +17,7 @@ async function bootstrap() {
     .setTitle('Task Scheduler')
     .setVersion('1.0')
     .setDescription('An API to manage Tasks')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, options);

@@ -15,9 +15,14 @@ export class HttpExceptionHandlerFilter<T extends HttpException>
 
     const statusCode = exception.getStatus();
 
+    const message = (
+      exception as unknown as { response: { message: string[] } }
+    )?.response?.message?.[0];
+
+    console.log({ exception });
     response.status(statusCode).json({
       error: exception.message,
-      message: exception.message,
+      message: message ? message : exception.message,
       statusCode,
       data: null,
     });

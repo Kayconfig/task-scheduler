@@ -15,6 +15,7 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 import { PaginationParamsDto } from 'src/common/dtos/pagination-params.dto';
 import { FindAllTaskResponseDto } from './dto/find-all-response.dto';
 import {
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -26,6 +27,7 @@ import { DeleteTaskResponseDto } from './dto/delete-task-response.dto';
 import { TaskNotFoundResponseDto } from './dto/task-not-found-response.dto';
 
 @Controller('task')
+@ApiBearerAuth()
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 

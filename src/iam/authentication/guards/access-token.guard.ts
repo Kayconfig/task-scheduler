@@ -23,10 +23,13 @@ export class AccessTokenGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const isPublic = this.reflector.get(
+    const isPublic = this.reflector.get<boolean>(
       IS_PUBLIC_METADATA_KEY,
       context.getHandler(),
     );
+    if (isPublic) {
+      return true;
+    }
     const request = context.switchToHttp().getRequest<Request>();
     const token = request.headers?.authorization?.split(' ')[1];
 
