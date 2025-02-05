@@ -34,7 +34,7 @@ $ pnpm run test:e2e
 
 ## Stay in touch
 
-- Author - [Kayode Odole](https://twitter.com/kammysliwiec)
+- Author - [Kayode Odole](https://twitter.com/odolekay)
 
 ## License
 
