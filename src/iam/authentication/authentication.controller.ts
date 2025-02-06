@@ -20,9 +20,12 @@ import { SignUpResponseDto } from './dto/sign-up-response.dto';
 import { ConflictExceptionResponseDto } from './dto/conflict-exception-response.dto';
 import { UnauthorizedExceptionResponseDto } from './dto/unauthorized-exception-response.dto';
 import { Response } from 'express';
-import { Public } from './metadatas/is-public.metadata';
+import { Public } from './decorators/is-public.metadata';
+import { Auth } from './decorators/auth.decorator';
+import { AuthTypes } from './enums/auth-types.enum';
 
 @Controller('authentication')
+@Auth(AuthTypes.None)
 export class AuthenticationController {
   constructor(private readonly authService: AuthenticationService) {}
 
