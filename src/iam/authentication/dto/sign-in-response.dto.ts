@@ -11,21 +11,29 @@ export class SignInResponseDataDto {
   })
   @IsString()
   accessToken: string;
+
+  @ApiProperty({
+    type: 'string',
+    example:
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+  })
+  @IsString()
+  refreshToken: string;
 }
 
 export class SignInResponseDto extends BaseResponseDto<SignInResponseDataDto> {
   @ApiProperty({
     type: SignInResponseDataDto,
   })
-  data: null;
+  data: null | SignInResponseDataDto;
 
-  static create(): SignInResponseDto {
+  static create(input: SignInResponseDataDto): SignInResponseDto {
     const dto = new SignInResponseDto();
 
     dto.error = null;
     dto.message = 'success';
     dto.statusCode = HttpStatus.OK;
-    dto.data = null;
+    dto.data = input;
 
     return dto;
   }

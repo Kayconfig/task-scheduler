@@ -8,4 +8,5 @@ export const configSchema = Joi.object({
   [envKeys.PG_PORT]: Joi.number().required(),
   [envKeys.JWT_SECRET]: Joi.string().required(),
   [envKeys.JWT_ACCESS_TOKEN_TTL]: Joi.string().required(),
+  [envKeys.JWT_REFRESH_TOKEN_TTL]: Joi.string().required(),
 });

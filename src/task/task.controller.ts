@@ -7,7 +7,6 @@ import {
   Param,
   Delete,
   Query,
-  InternalServerErrorException,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -17,14 +16,16 @@ import { FindAllTaskResponseDto } from './dto/find-all-response.dto';
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
+  ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
 } from '@nestjs/swagger';
 import { CreateTaskResponse } from './dto/create-task-response.dto';
 import { FindOneResponseDto } from './dto/find-one-response.dto';
 import { UpdateTaskResponseDto } from './dto/update-task-response.dto';
-import { DeleteTaskResponseDto } from './dto/delete-task-response.dto';
 import { TaskNotFoundResponseDto } from './dto/task-not-found-response.dto';
+import { ActiveUser } from 'src/iam/decorators/active-user.decorator';
+import { IActiveUser } from 'src/iam/decorators/interface/active-user.interface';
 
 @Controller('task')
 @ApiBearerAuth()
@@ -37,10 +38,9 @@ export class TaskController {
   })
   create(
     @Body() createTaskDto: CreateTaskDto,
-    userId: string = 'test-user-id',
+    @ActiveUser() activeUser: IActiveUser,
   ): Promise<CreateTaskResponse> {
-    console.log({ createTaskDto });
-    return this.taskService.create(createTaskDto, userId);
+    return this.taskService.create(createTaskDto, activeUser.sub);
   }
 
   @Get()
@@ -49,9 +49,9 @@ export class TaskController {
   })
   findAll(
     @Query() paginationParam: PaginationParamsDto,
-    userId: string = 'test-user-id',
+    @ActiveUser() activeUser: IActiveUser,
   ) {
-    return this.taskService.findAll(paginationParam, userId);
+    return this.taskService.findAll(paginationParam, activeUser.sub);
   }
 
   @Get(':id')
@@ -61,8 +61,8 @@ export class TaskController {
   @ApiNotFoundResponse({
     type: TaskNotFoundResponseDto,
   })
-  findOne(@Param('id') id: string, userId: string = 'test-user-id') {
-    return this.taskService.findOne(id, userId);
+  findOne(@Param('id') id: string, @ActiveUser() activeUser: IActiveUser) {
+    return this.taskService.findOne(id, activeUser.sub);
   }
 
   @Patch(':id')
@@ -75,16 +75,17 @@ export class TaskController {
   update(
     @Param('id') id: string,
     @Body() updateTaskDto: UpdateTaskDto,
-    userId: string = 'test-user-id',
+    @ActiveUser() activeUser: IActiveUser,
   ) {
-    return this.taskService.update({ userId, taskId: id }, updateTaskDto);
+    return this.taskService.update(
+      { userId: activeUser.sub, taskId: id },
+      updateTaskDto,
+    );
   }
 
   @Delete(':id')
-  @ApiOkResponse({
-    type: DeleteTaskResponseDto,
-  })
-  remove(@Param('id') id: string, userId: string = 'test-user-id') {
-    return this.taskService.remove({ userId, taskId: id });
+  @ApiNoContentResponse({})
+  remove(@Param('id') id: string, @ActiveUser() activeUser: IActiveUser) {
+    return this.taskService.remove({ userId: activeUser.sub, taskId: id });
   }
 }

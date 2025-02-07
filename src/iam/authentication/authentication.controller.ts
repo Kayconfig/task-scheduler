@@ -3,7 +3,6 @@ import {
   Controller,
   NotFoundException,
   Post,
-  Res,
   UnauthorizedException,
 } from '@nestjs/common';
 import { SignUpDto } from './dto/sign-up.dto';
@@ -19,10 +18,9 @@ import { SignInResponseDto } from './dto/sign-in-response.dto';
 import { SignUpResponseDto } from './dto/sign-up-response.dto';
 import { ConflictExceptionResponseDto } from './dto/conflict-exception-response.dto';
 import { UnauthorizedExceptionResponseDto } from './dto/unauthorized-exception-response.dto';
-import { Response } from 'express';
-import { Public } from './decorators/is-public.metadata';
 import { Auth } from './decorators/auth.decorator';
 import { AuthTypes } from './enums/auth-types.enum';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 
 @Controller('authentication')
 @Auth(AuthTypes.None)
@@ -30,7 +28,6 @@ export class AuthenticationController {
   constructor(private readonly authService: AuthenticationService) {}
 
   @Post('sign-up')
-  @Public()
   @ApiCreatedResponse({
     type: SignUpResponseDto,
   })
@@ -48,23 +45,34 @@ export class AuthenticationController {
   @ApiUnauthorizedResponse({
     type: UnauthorizedExceptionResponseDto,
   })
-  @Public()
   async signIn(
     @Body() signInDto: SignInDto,
-    @Res({ passthrough: true }) response: Response,
+    // @Res({ passthrough: true }) response: Response,
   ): Promise<SignInResponseDto> {
     try {
-      const accessToken = await this.authService.signin(signInDto);
-      response.cookie('accessToken', accessToken, {
-        secure: true,
-        httpOnly: true,
-        sameSite: true,
-      });
-      return SignInResponseDto.create();
+      const { accessToken, refreshToken } =
+        await this.authService.signin(signInDto);
+      //   response.cookie('accessToken', accessToken, {
+      //     secure: true,
+      //     httpOnly: true,
+      //     sameSite: true, // disable by adding random text to the key of the cookie
+      //   });
+      return SignInResponseDto.create({ accessToken, refreshToken });
     } catch (err) {
       if (err instanceof NotFoundException) {
         throw new UnauthorizedException();
       }
     }
+  }
+
+  @ApiOkResponse({
+    type: SignInResponseDto,
+  })
+  @ApiUnauthorizedResponse({
+    type: UnauthorizedExceptionResponseDto,
+  })
+  @Post('refresh-tokens')
+  refreshTokens(@Body() refreshTokenDto: RefreshTokenDto) {
+    return this.authService.refreshToken(refreshTokenDto);
   }
 }
