@@ -6,7 +6,6 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Priorities } from './constants';
-import { CreateTaskDto } from '../dto/create-task.dto';
 
 @Entity()
 export class Task {
@@ -36,17 +35,5 @@ export class Task {
   updatedAt?: Date;
 
   @Column()
-  userId: string;
-
-  static create(
-    { title, deadline, priority }: CreateTaskDto,
-    userId: string,
-  ): Task {
-    const createdTask = new Task();
-    createdTask.title = title;
-    createdTask.deadline = deadline;
-    createdTask.priority = priority;
-    createdTask.userId = userId;
-    return createdTask;
-  }
+  ownerId: string;
 }

@@ -14,7 +14,7 @@ export const typeOrmOptions: TypeOrmModuleAsyncOptions = {
       password: configService.get(envKeys.PG_PASSWRD),
       port: +configService.get(envKeys.PG_PORT),
       autoLoadEntities: isDev ? true : false,
-      synchronize: isDev ? true : false,
+      synchronize: false,
     };
   },
 };

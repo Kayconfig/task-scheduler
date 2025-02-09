@@ -37,7 +37,7 @@ export class TaskService {
     userId: string,
   ): Promise<FindAllTaskResponseDto> {
     const tasks = await this.taskRepository.find({
-      where: { userId },
+      where: { ownerId: userId },
       skip: paginationParams.offset,
       take: paginationParams.limit,
       order: { createdAt: 'DESC' },
@@ -46,7 +46,7 @@ export class TaskService {
   }
 
   async findOne(id: string, userId: string): Promise<FindOneResponseDto> {
-    const task = await this.taskRepository.findOneBy({ id, userId });
+    const task = await this.taskRepository.findOneBy({ id, ownerId: userId });
     if (!task) {
       throw new NotFoundException('Task not found.');
     }

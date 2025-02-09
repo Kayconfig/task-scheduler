@@ -43,7 +43,7 @@ export class TaskDto {
     type: String,
     example: '2cd5ed86-a0fa-485c-afb2-b8d93b772a28',
   })
-  userId: string;
+  ownerId: string;
 
   static create(input: Task): TaskDto {
     const taskDto = new TaskDto();
@@ -52,7 +52,7 @@ export class TaskDto {
     taskDto.updatedAt = input.updatedAt.toISOString();
     taskDto.deadline = input.deadline;
     taskDto.priority = input.priority;
-    taskDto.userId = input.userId;
+    taskDto.ownerId = input.ownerId;
     taskDto.id = input.id;
 
     return taskDto;

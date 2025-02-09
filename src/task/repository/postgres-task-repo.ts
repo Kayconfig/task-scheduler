@@ -16,7 +16,7 @@ export class PostgresTaskRepository extends TaskRepository {
     super();
   }
   async create(createTaskDto: CreateTaskDto, userId: string): Promise<Task> {
-    const task = Task.create(createTaskDto, userId);
+    const task = this.repository.create({ ...createTaskDto, ownerId: userId });
     return this.repository.save(task);
   }
   async update(
@@ -44,7 +44,7 @@ export class PostgresTaskRepository extends TaskRepository {
   async remove(criteria: IUpdateTaskCriteria): Promise<void> {
     await this.repository.delete({
       id: criteria.taskId,
-      userId: criteria.userId,
+      ownerId: criteria.userId,
     });
   }
 }
