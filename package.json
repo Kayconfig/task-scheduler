@@ -17,7 +17,10 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "migration:generate": "pnpm build; pnpm typeorm migration:generate src/migrations/SchemaSync -d dist/typeorm-cli.config",
+    "migration:run": "pnpm build; pnpm typeorm migration:run -d dist/typeorm-cli.config",
+    "migration:revert": "pnpm build; pnpm typeorm migration:revert -d dist/typeorm-cli.config"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -34,6 +37,7 @@
     "dotenv": "^16.4.7",
     "express-swagger-ui": "^0.1.0",
     "helmet": "^8.0.0",
+    "ioredis": "^5.4.2",
     "joi": "^17.13.3",
     "moment": "^2.30.1",
     "pg": "^8.13.1",

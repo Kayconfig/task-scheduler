@@ -1,3 +1,4 @@
+import { Role } from 'src/iam/authorization/enums/auth-roles.enum';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -13,4 +14,7 @@ export class User {
 
   @Column({ nullable: false })
   password: string;
+
+  @Column({ enum: Role, default: Role.REGULAR })
+  role: Role;
 }

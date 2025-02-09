@@ -3,6 +3,7 @@ import {
   Controller,
   NotFoundException,
   Post,
+  SerializeOptions,
   UnauthorizedException,
 } from '@nestjs/common';
 import { SignUpDto } from './dto/sign-up.dto';
@@ -34,7 +35,8 @@ export class AuthenticationController {
   @ApiConflictResponse({
     type: ConflictExceptionResponseDto,
   })
-  signUp(@Body() signUpDto: SignUpDto) {
+  @SerializeOptions({ type: SignUpResponseDto })
+  signUp(@Body() signUpDto: SignUpDto): Promise<SignUpResponseDto> {
     return this.authService.signup(signUpDto);
   }
 
@@ -45,6 +47,7 @@ export class AuthenticationController {
   @ApiUnauthorizedResponse({
     type: UnauthorizedExceptionResponseDto,
   })
+  @SerializeOptions({ type: SignInResponseDto })
   async signIn(
     @Body() signInDto: SignInDto,
     // @Res({ passthrough: true }) response: Response,
@@ -71,7 +74,7 @@ export class AuthenticationController {
   @ApiUnauthorizedResponse({
     type: UnauthorizedExceptionResponseDto,
   })
-  @Post('refresh-tokens')
+  @Post('refresh-token')
   refreshTokens(@Body() refreshTokenDto: RefreshTokenDto) {
     return this.authService.refreshToken(refreshTokenDto);
   }

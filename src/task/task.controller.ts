@@ -25,7 +25,9 @@ import { FindOneResponseDto } from './dto/find-one-response.dto';
 import { UpdateTaskResponseDto } from './dto/update-task-response.dto';
 import { TaskNotFoundResponseDto } from './dto/task-not-found-response.dto';
 import { ActiveUser } from 'src/iam/decorators/active-user.decorator';
-import { IActiveUser } from 'src/iam/decorators/interface/active-user.interface';
+import { IActiveUser } from 'src/iam/interfaces/active-user.interface';
+import { AuthRole } from 'src/iam/authorization/decorators/auth-role.decorator';
+import { Role } from 'src/iam/authorization/enums/auth-roles.enum';
 
 @Controller('task')
 @ApiBearerAuth()
@@ -82,7 +84,7 @@ export class TaskController {
       updateTaskDto,
     );
   }
-
+  @AuthRole(Role.ADMIN)
   @Delete(':id')
   @ApiNoContentResponse({})
   remove(@Param('id') id: string, @ActiveUser() activeUser: IActiveUser) {

@@ -8,6 +8,7 @@ import { CommonModule } from './common/common.module';
 import { IamModule } from './iam/iam.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { RedisModule } from './redis/redis.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { APP_GUARD } from '@nestjs/core';
     CommonModule,
     IamModule,
     ThrottlerModule.forRoot([{ ttl: 60_000, limit: 5 }]),
+    RedisModule,
   ],
   providers: [
     {

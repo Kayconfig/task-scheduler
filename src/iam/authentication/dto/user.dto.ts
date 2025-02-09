@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
 import { IsEmail, IsString } from 'class-validator';
+import { Role } from 'src/iam/authorization/enums/auth-roles.enum';
 import { User } from 'src/user/entities/user.entity';
 
 export class UserDto {
@@ -24,11 +26,15 @@ export class UserDto {
   })
   email: string;
 
+  @Exclude()
+  role: Role;
+
   static create(user: User): UserDto {
     const userDto = new UserDto();
     userDto.email = user.email;
     userDto.name = user.name;
     userDto.id = user.id;
+    userDto.role = user.role;
 
     return userDto;
   }

@@ -9,4 +9,6 @@ export const configSchema = Joi.object({
   [envKeys.JWT_SECRET]: Joi.string().required(),
   [envKeys.JWT_ACCESS_TOKEN_TTL]: Joi.string().required(),
   [envKeys.JWT_REFRESH_TOKEN_TTL]: Joi.string().required(),
+  [envKeys.REDIS_HOST]: Joi.string().required(),
+  [envKeys.REDIS_PORT]: Joi.number().required(),
 });
