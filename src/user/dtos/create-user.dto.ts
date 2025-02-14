@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
 import { IsString } from 'class-validator';
 
 export class CreateUserDto {
@@ -22,4 +23,7 @@ export class CreateUserDto {
   })
   @IsString()
   password: string;
+
+  @Exclude()
+  googleId?: string;
 }

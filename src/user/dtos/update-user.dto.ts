@@ -6,4 +6,10 @@ export class UpdateUserDto {
     example: 'John Doe',
   })
   name?: string;
+
+  @ApiProperty({
+    type: 'string',
+    example: 'jdfkjdf-43j4hhjhdfu0eiqoi',
+  })
+  googleId?: string;
 }

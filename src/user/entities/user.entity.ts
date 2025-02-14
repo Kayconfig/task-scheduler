@@ -12,9 +12,12 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   password: string;
 
   @Column({ enum: Role, default: Role.REGULAR })
   role: Role;
+
+  @Column({ nullable: true })
+  googleId: string;
 }

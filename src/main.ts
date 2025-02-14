@@ -20,6 +20,9 @@ async function bootstrap() {
   );
   app.useGlobalInterceptors(new ClassSerializerInterceptor(new Reflector()));
   app.use(helmet());
+  app.enableCors({
+    origin: 'http://localhost:3001',
+  });
   const options = new DocumentBuilder()
     .setTitle('Task Scheduler')
     .setVersion('1.0')

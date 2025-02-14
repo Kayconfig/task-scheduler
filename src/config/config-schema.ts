@@ -1,5 +1,6 @@
 import * as Joi from 'joi';
 import { envKeys } from './env-keys';
+import { env } from 'process';
 
 export const configSchema = Joi.object({
   [envKeys.PG_DB_NAME]: Joi.string().required(),
@@ -11,4 +12,6 @@ export const configSchema = Joi.object({
   [envKeys.JWT_REFRESH_TOKEN_TTL]: Joi.string().required(),
   [envKeys.REDIS_HOST]: Joi.string().required(),
   [envKeys.REDIS_PORT]: Joi.number().required(),
+  [envKeys.GOOGLE_CLIENT_ID]: Joi.string().required(),
+  [envKeys.GOOGLE_CLIENT_SECRET]: Joi.string().required(),
 });

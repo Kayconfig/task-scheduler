@@ -13,12 +13,16 @@ import { AccessTokenGuard } from './authentication/guards/access-token.guard';
 import { RefreshTokenIdsStorage } from './authentication/refresh-token-ids.storage';
 import { RedisModule } from 'src/redis/redis.module';
 import { AuthorizationGuard } from './authorization/guards/authorization-guard/authorization.guard';
+import { GoogleAuthenticationService } from './authentication/social/google-authentication.service';
+import { GoogleAuthenticationController } from './authentication/social/google-authentication.controller';
+import googleConfig from './authentication/social/config/google-config';
 
 @Module({
   imports: [
     UserModule,
-    JwtModule.registerAsync(jwtConfig.asProvider()),
     ConfigModule.forFeature(jwtConfig),
+    ConfigModule.forFeature(googleConfig),
+    JwtModule.registerAsync(jwtConfig.asProvider()),
     RedisModule,
   ],
   providers: [
@@ -35,7 +39,8 @@ import { AuthorizationGuard } from './authorization/guards/authorization-guard/a
     },
     AccessTokenGuard,
     RefreshTokenIdsStorage,
+    GoogleAuthenticationService,
   ],
-  controllers: [AuthenticationController],
+  controllers: [AuthenticationController, GoogleAuthenticationController],
 })
 export class IamModule {}
