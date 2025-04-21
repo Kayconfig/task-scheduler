@@ -1,6 +1,8 @@
-## Objective
+# Task Scheduler
 
-Create a task scheduler application where users can create, view, and manage tasks with deadlines and priorities.
+## Description
+
+This application serves as a comprehensive task scheduler, enabling users to efficiently create, view, and manage tasks with defined deadlines and prioritized levels of importance.
 
 ## Project setup
 
